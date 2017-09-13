@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 
-import App from './components/app';
+import PixelArtContainer from './components/pixel_art_container';
 import reducers from './reducers';
 
 const createStoreWithMiddleware = applyMiddleware()(createStore);
 
 ReactDOM.render(
   <Provider store={createStoreWithMiddleware(reducers)}>
-    <App />
+    <PixelArtContainer />
   </Provider>
   , document.querySelector('.container'));
