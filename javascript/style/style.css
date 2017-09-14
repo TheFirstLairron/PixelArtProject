@@ -1,0 +1,13 @@
+.square{
+    width: 10px;
+    height: 10px;
+}
+
+.picker{
+    float: left;
+}
+
+table{
+    border: 1px solid black;
+    float: right;
+}
