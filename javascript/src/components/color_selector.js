@@ -1,7 +1,5 @@
 import React from 'react';
 import { SketchPicker } from 'react-color';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux'
 
 
 
