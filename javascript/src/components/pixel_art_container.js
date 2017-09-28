@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { setCurrentColor, setColorOnPosition } from '../actions/index';
+import { setCurrentColor, setColorOnPosition, setImageForDownload } from '../actions/index';
 
 import ColorPicker from './color_selector';
 import Square from './square';
@@ -16,9 +16,17 @@ class PixelArtContainer extends React.Component {
         this.handleColorChange = this.handleColorChange.bind(this);
         this.renderSquares = this.renderSquares.bind(this);
         this.handleColorChangeOnSquare = this.handleColorChangeOnSquare.bind(this);
+        this.handleImageClick = this.handleImageClick.bind(this);
     }
 
     render() {
+
+        if (this.props.image !== "") {
+            return(<div className="image-container">
+                <img src={this.props.image} onClick={this.handleImageClick} />
+            </div>);
+        }
+
         return (
             <div>
                 <span className="picker"><ColorPicker currentColor={this.props.current_color} handleColorChange={this.handleColorChange} /></span>
@@ -41,7 +49,7 @@ class PixelArtContainer extends React.Component {
             grid.push((
                 <tr key={x} className="square">
                     {
-                        Array(64).fill().map(() =>{
+                        Array(64).fill().map(() => {
                             let value = <Square key={x + ',' + y} x={x} y={y} clickHandler={this.handleColorChangeOnSquare} color={this.props.squares[x + ',' + y]} />;
                             y++;
                             return value;
@@ -49,29 +57,39 @@ class PixelArtContainer extends React.Component {
                     }
                 </tr>
             ));
-    }
+        }
         return grid;
     }
 
-handleColorChange(color) {
-    this.props.setCurrentColor(color.hex);
+    handleColorChange(color) {
+        this.props.setCurrentColor(color.hex);
+    }
+
+    handleColorChangeOnSquare(x, y) {
+        this.props.setColorOnPosition(this.props.current_color, x, y);
+    }
+
+    handleImageClick() {
+        console.log("working");
+        let link = document.createElement("a");
+        link.href = this.props.image;
+        link.download = "Image";
+        document.body.appendChild(link);
+        link.click();
+    }
 }
 
-handleColorChangeOnSquare(x, y) {
-    this.props.setColorOnPosition(this.props.current_color, x, y);
-}
-}
-
-function mapStateToProps({ current_color, squares }, ownProps) {
+function mapStateToProps({ current_color, squares, image }, ownProps) {
     return {
         squares,
-        current_color
+        current_color,
+        image
     };
 }
 
 function mapDispatchToProps(dispatch) {
     // Add new actions that need to be triggered to this object
-    return bindActionCreators({ setCurrentColor, setColorOnPosition }, dispatch);
+    return bindActionCreators({ setCurrentColor, setColorOnPosition, setImageForDownload }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PixelArtContainer);
