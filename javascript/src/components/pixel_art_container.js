@@ -17,6 +17,7 @@ class PixelArtContainer extends React.Component {
         this.renderSquares = this.renderSquares.bind(this);
         this.handleColorChangeOnSquare = this.handleColorChangeOnSquare.bind(this);
         this.handleImageClick = this.handleImageClick.bind(this);
+        this.handleSubmittingImage = this.handleSubmittingImage.bind(this);
     }
 
     render() {
@@ -30,6 +31,7 @@ class PixelArtContainer extends React.Component {
         return (
             <div>
                 <span className="picker"><ColorPicker currentColor={this.props.current_color} handleColorChange={this.handleColorChange} /></span>
+                <button onClick={this.handleSubmittingImage}>Submit</button>
                 <br />
                 <table>
                     <tbody>
@@ -50,8 +52,13 @@ class PixelArtContainer extends React.Component {
                 <tr key={x} className="square">
                     {
                         Array(64).fill().map(() => {
+                            if(y == 64)
+                            {
+                                y = 0;
+                            }
                             let value = <Square key={x + ',' + y} x={x} y={y} clickHandler={this.handleColorChangeOnSquare} color={this.props.squares[x + ',' + y]} />;
                             y++;
+                            
                             return value;
                         })
                     }
@@ -69,11 +76,14 @@ class PixelArtContainer extends React.Component {
         this.props.setColorOnPosition(this.props.current_color, x, y);
     }
 
+    handleSubmittingImage(){
+        this.props.setImageForDownload(this.props.squares);
+    }
+
     handleImageClick() {
-        console.log("working");
         let link = document.createElement("a");
         link.href = this.props.image;
-        link.download = "Image";
+        link.download = "untitled.png";
         document.body.appendChild(link);
         link.click();
     }

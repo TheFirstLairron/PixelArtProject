@@ -6,7 +6,7 @@ import image from './image_reducer';
 const rootReducer = combineReducers({
     squares,
     current_color,
-    image
+    image,
 });
 
 export default rootReducer;

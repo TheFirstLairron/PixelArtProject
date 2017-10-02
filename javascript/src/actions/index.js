@@ -20,15 +20,21 @@ export function setCurrentColor(color) {
 
 export function setImageForDownload(object) {
 
-    let image = Array(64).fill(Array(64).fill("#000000"));
+    let image = Array(64);
+    for(let k = 0; k < 64; k++)
+    {
+        image[k] = Array(64).fill("#FFFFFF");
+    }
 
     for (let i = 0; i < 64; i++) {
         for (let j = 0; j < 64; j++) {
-            image[i][j] = object[i + ',' + j];
+            let pos = i + ',' + j;
+            let value = object[pos] !== undefined ? object[pos] : "#FFFFFF";
+            image[i][j] = value;
         }
     }
 
-    let request = axios.post("/create-image", image);
+    let request = axios.post("/create-image", { image });
 
     return {
         type: NEW_IMAGE_FOR_DOWNLOAD,
