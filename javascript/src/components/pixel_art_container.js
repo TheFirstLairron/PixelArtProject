@@ -23,8 +23,8 @@ class PixelArtContainer extends React.Component {
     render() {
 
         if (this.props.image !== "") {
-            return(<div className="image-container">
-                <img src={this.props.image} onClick={this.handleImageClick} />
+            return(<div>
+                <img className="image-container" src={this.props.image} onClick={this.handleImageClick} />
             </div>);
         }
 
